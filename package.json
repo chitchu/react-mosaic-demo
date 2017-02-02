@@ -36,7 +36,6 @@
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.config.js",
     "build": "webpack --config config/webpack.prod.config.js",
-    "deploy": "rm -rf build && npm run-script build && gh-pages --repo https://$GH_TOKEN@github.com/chitchu/react-mosaic-demo.git -d build --silent",
-    "local-deploy": "rm -rf build && npm run-script build && gh-pages -d build"
+    "deploy": "rm -rf build && npm run-script build && gh-pages --repo https://$GH_TOKEN@github.com/chitchu/react-mosaic.git -d build --silent"
   }
 }
