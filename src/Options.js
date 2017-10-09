@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Style from 'styled-components';
 
 import settingsIcons from './ic_settings_black_24px.svg';
 
 class Options extends Component {
-  state = {optionVisible: false};
+  state = { optionVisible: false };
 
   OptionsContainer = Style.div`
     position:absolute;
@@ -72,59 +72,80 @@ class Options extends Component {
     padding: 0.6rem 0;
   `;
 
+  Disclaimer = Style.div`
+    font-family: 'Courgette', cursive;
+    font-size: 0.8rem;
+    color: pink;
+  `;
+
   componentWillReceiveProps(nextProps) {
-    this.setState({...nextProps});
+    this.setState({ ...nextProps });
   }
 
   handleOptionToggle = () => {
-    this.setState({optionVisible: !this.state.optionVisible});
+    this.setState({ optionVisible: !this.state.optionVisible });
   };
 
-  handleTileSizeChange = ({target: {value}}) => {
-    this.setState({tileSize: Math.min(100, Math.max(0, value))});
+  handleTileSizeChange = ({ target: { value } }) => {
+    this.setState({ tileSize: Math.min(100, Math.max(0, value)) });
   };
 
   handleOnApply = () => {
     this.props.onChange(this.state);
   };
 
-  handleRendererChange = ({target: {value}}) => {
-    this.setState({selectedRenderer: value});
+  handleRendererChange = ({ target: { value } }) => {
+    this.setState({ selectedRenderer: value });
   };
   render() {
     const options = this.state.optionVisible ? (
-        <this.OptionPanel>
-          <this.StyledLabel>
-            Tile Size
-            <this.StyledInput
-              type="number"
-              onChange={this.handleTileSizeChange}
-              value={this.state.tileSize}
-            />
-          </this.StyledLabel>
-          <this.StyledLabel>
-            Renderer
-            <this.StyledSelect
-              onChange={this.handleRendererChange}
-              value={this.state.selectedRenderer}
+      <this.OptionPanel>
+        <this.StyledLabel>
+          Tile Size
+          <this.StyledInput
+            type="number"
+            onChange={this.handleTileSizeChange}
+            value={this.state.tileSize}
+          />
+        </this.StyledLabel>
+        <this.StyledLabel>
+          Renderer
+          <this.StyledSelect
+            onChange={this.handleRendererChange}
+            value={this.state.selectedRenderer}
+          >
+            <option value="default">Square (default)</option>
+            {this.props.renderers.map((renderer, index) => {
+              return (
+                <option key={index} value={renderer}>
+                  {renderer}
+                </option>
+              );
+            })}
+          </this.StyledSelect>
+        </this.StyledLabel>
+        <this.ApplyContainer>
+          <this.StyledButton onClick={this.handleOnApply}>
+            Apply
+          </this.StyledButton>
+        </this.ApplyContainer>
+        <this.Disclaimer>
+          <p>
+            Check out the repo at{' '}
+            <a
+              href="https://github.com/chitchu/react-mosaic"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'lightblue' }}
             >
-              <option value="default">Square (default)</option>
-              {this.props.renderers.map((renderer, index) => {
-                  return (
-                    <option key={index} value={renderer}>
-                      {renderer}
-                    </option>
-                  );
-                })}
-            </this.StyledSelect>
-          </this.StyledLabel>
-          <this.ApplyContainer>
-            <this.StyledButton onClick={this.handleOnApply}>
-              Apply
-            </this.StyledButton>
-          </this.ApplyContainer>
-        </this.OptionPanel>
-      ) : '';
+              github.com/chitchu/react-mosaic
+            </a>
+          </p>
+        </this.Disclaimer>
+      </this.OptionPanel>
+    ) : (
+      ''
+    );
     return (
       <this.OptionsContainer>
         <this.StyledSettingsButton onClick={this.handleOptionToggle}>

@@ -10,24 +10,25 @@ const config = {
       'react-dom',
       'styled-components',
       'lodash/debounce',
-      'react-mosaic'
+      'react-mosaic',
     ],
-    assets: [path.join(process.cwd(), 'src', 'stock-photo.jpg')]
+    assets: [path.join(process.cwd(), 'src', 'stock-photo.jpg')],
   },
   output: {
     filename: `[name].[chunkhash:8].js`,
     path: path.resolve(process.cwd(), 'build'),
-    pathinfo: false
+    pathinfo: false,
   },
   module: {
     rules: [
-      {test: /\.js$/, exclude: /node_modules/, use: 'babel-loader'},
-      {test: /\.css$/, use: ['style-loader', 'css-loader']},
-      {test: /\.(jpe?g|png|gif)$/i, use: 'base64-image-loader'},
-      {test: /\.svg$/i, loaders: ['file-loader', 'image-webpack-loader']}
-    ]
+      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.(jpe?g|png|gif)$/i, use: 'base64-image-loader' },
+      { test: /\.svg$/i, loaders: ['file-loader', 'image-webpack-loader'] },
+    ],
   },
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: path.resolve(process.cwd(), 'src', 'index.html'),
@@ -41,16 +42,16 @@ const config = {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true
-      }
+        minifyURLs: true,
+      },
     }),
     new webpack.DefinePlugin({
-      'process.env': {NODE_ENV: JSON.stringify('production')}
+      'process.env': { NODE_ENV: JSON.stringify('production') },
     }),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'assets', 'manifest']
-    })
-  ]
+      names: ['vendor', 'assets', 'manifest'],
+    }),
+  ],
 };
 module.exports = config;
